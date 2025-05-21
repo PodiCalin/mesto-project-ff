@@ -1,7 +1,7 @@
 'use strict'
 //Импорты
 import "./pages/index.css"
-import { initialCards } from "./scripts/cards.js"
+import { initialCards } from "./components/cards.js"
 import { openModal , closeModal } from "./components/modal.js"
 import { createCard , ClicklikeButton ,  deleteCard } from "./components/card.js"
 //Список карточек
@@ -17,8 +17,7 @@ const titlePopup = popupCardImage.querySelector('.popup__caption')
 //Кнопки
 const editButton = document.querySelector('.profile__edit-button')
 const addButton = document.querySelector('.profile__add-button')
-const closePopupButtonSave = popup.querySelector('.popup__button')
-const closePopupCross = popup.querySelectorAll('.popup__close')
+const closePopupCross = document.querySelectorAll('.popup__close')
 const name = document.querySelector('.profile__title')
 const job = document.querySelector('.profile__description')
 //Форма редактирования
@@ -34,18 +33,14 @@ const urlInputForm = document.querySelector('.popup__input_type_url')
 editButton.addEventListener('click' , function(evt){openModal(editPopup)})
 addButton.addEventListener('click' , function(evt){openModal(addPopup)})
 //Перебор крестиков
-// popups.forEach(function(popup){
-//     closePopupCross.addEventListener('click' , function(evt){closeModal(popup)})
-//     closePopupButtonSave.addEventListener('click' , function(evt){closeModal(popup)})
-// })
 closePopupCross.forEach(function(element){
     element.addEventListener('click', function(evt){
-        closeModal(popup)
+        closeModal(element.closest(".popup"))
     })
 })
 //Функция обработки клика по фото
 function handleClickCard(cardImageData , cardDescriptions , cardTitle){
-    titlePopup.textContent = cardTitle.textContent
+    titlePopup.textContent = cardTitle
      
     Object.assign(imagePopup , {
      src: cardImageData,
@@ -72,6 +67,9 @@ function handleFormSubmit(evt) {
     name.textContent = nameValue
     job.textContent = jobValue
 
+    popups.forEach((item) => {
+        closeModal(item)
+    })
     editProfileForm.reset()
 }
 editProfileForm.addEventListener('submit', handleFormSubmit)
@@ -89,8 +87,10 @@ function handleAddCardForm(evt) {
     const setCard = createCard(cardImage , deleteCard , handleClickCard , ClicklikeButton)
     unorderList.prepend(setCard)
 
+    popups.forEach((item) => {
+        closeModal(item)
+    })
     newPlaceForm.reset()
 }
-
 newPlaceForm.addEventListener('submit', handleAddCardForm)
 
