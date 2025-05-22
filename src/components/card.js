@@ -1,5 +1,5 @@
 //Функция создания карточки
-export const createCard = function(data , callbackDelete , handleClickCard , ClicklikeButton) {
+export const createCard = function(data , callbackDelete , handleClickCard , clicklikeButton) {
     const cardTemplate = document.querySelector('#card-template').content
     const cardElement = cardTemplate.querySelector(".card").cloneNode(true)
 
@@ -13,17 +13,17 @@ export const createCard = function(data , callbackDelete , handleClickCard , Cli
     })
 
     cardElement.querySelector('.card__like-button').addEventListener('click' , function(evt) {
-    return ClicklikeButton(evt.target)
+    return clicklikeButton(evt.target)
     })
 
     cardImage.addEventListener('click' , function(evt){
-       return handleClickCard(cardImageData , cardDescriptions , cardTitle)
+       return handleClickCard(data)
     })
 
     return cardElement
 }
 //Функция лайка
-export function ClicklikeButton(likeButton){
+export function clicklikeButton(likeButton){
     likeButton.classList.toggle('card__like-button_is-active')
 }
 //Функция удаления

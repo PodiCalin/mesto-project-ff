@@ -3,12 +3,12 @@
 import "./pages/index.css"
 import { initialCards } from "./components/cards.js"
 import { openModal , closeModal } from "./components/modal.js"
-import { createCard , ClicklikeButton ,  deleteCard } from "./components/card.js"
+import { createCard , clicklikeButton ,  deleteCard } from "./components/card.js"
 //Список карточек
 const unorderList = document.querySelector('.places__list')
 //Попапы
-export const popup = document.querySelector('.popup')
-export const popups = document.querySelectorAll('.popup')
+const popup = document.querySelector('.popup')
+const popups = document.querySelectorAll('.popup')
 const editPopup = document.querySelector('.popup_type_edit')
 const addPopup = document.querySelector('.popup_type_new-card')
 const popupCardImage = document.querySelector('.popup_type_image')
@@ -42,17 +42,15 @@ closePopupCross.forEach(function(element){
 function handleClickCard(cardImageData , cardDescriptions , cardTitle){
     titlePopup.textContent = cardTitle
      
-    Object.assign(imagePopup , {
-     src: cardImageData,
-     alt: cardDescriptions
-    })
+    imagePopup.src = cardImageData
+    imagePopup.alt = cardDescriptions
 
     openModal(popupCardImage)
  }
  //Функция добавления карточек
  const addCard = function() {
     initialCards.forEach(function(element) {
-        const setCard = createCard(element , deleteCard , handleClickCard , ClicklikeButton)
+        const setCard = createCard(element , deleteCard , handleClickCard , clicklikeButton)
         return unorderList.append(setCard)
     })
 }
@@ -84,7 +82,7 @@ function handleAddCardForm(evt) {
         link: urlInput
     }
 
-    const setCard = createCard(cardImage , deleteCard , handleClickCard , ClicklikeButton)
+    const setCard = createCard(cardImage , deleteCard , handleClickCard , clicklikeButton)
     unorderList.prepend(setCard)
 
     popups.forEach((item) => {
