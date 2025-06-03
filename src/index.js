@@ -25,10 +25,11 @@ const editProfileForm = document.forms["edit-profile"]
 //Форма добавления
 const newPlaceForm = document.forms["new-place"]
 //Инпуты
-const nameInput = document.querySelector('.popup__input_type_name')
-const jobInput = document.querySelector('.popup__input_type_description')
-const placeInputForm = document.querySelector('.popup__input_type_card-name')
-const urlInputForm = document.querySelector('.popup__input_type_url')
+const editInputs = editProfileForm.querySelectorAll('.popup__input')
+const nameInput = editProfileForm.querySelector('.popup__input_type_name')
+const jobInput = editProfileForm.querySelector('.popup__input_type_description')
+const placeInputForm = newPlaceForm.querySelector('.popup__input_type_card-name')
+const urlInputForm = newPlaceForm.querySelector('.popup__input_type_url')
 //Вызовы функций
 editButton.addEventListener('click' , function(evt){openModal(editPopup)})
 addButton.addEventListener('click' , function(evt){openModal(addPopup)})
@@ -91,4 +92,35 @@ function handleAddCardForm(evt) {
     newPlaceForm.reset()
 }
 newPlaceForm.addEventListener('submit', handleAddCardForm)
-
+//Показывает ошибку
+const showError = (el, errorMessage) => {
+  el.classList.add('popup__input_type_error');
+  const formError = el.parentElement.querySelector(`.${el.id}-error`)
+  formError.textContent = errorMessage
+  formError.classList.add('form__input-error_active')
+}
+//Скрывает ошибку
+const hideError = (el) => {
+  el.classList.remove('popup__input_type_error');
+  const formError = el.parentElement.querySelector(`.${el.id}-error`)
+  formError.textContent = ''
+  formError.classList.remove('form__input-error_active')
+}
+//Валидация формы
+const checkInputValidity = (el) => {
+  if (!el.validity.valid) {
+    showError(el, el.validationMessage)
+  } else {
+    hideError(el)
+  }
+}
+//
+editProfileForm.addEventListener('submit', (evt) => {
+  evt.preventDefault()
+})
+//Перебор инпутов
+editInputs.forEach((el) => {
+  el.addEventListener('input', () => {
+    checkInputValidity(el)
+  })
+})
