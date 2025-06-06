@@ -1,4 +1,3 @@
-
 //Функция открытия попапа
 export function openModal(popup){
     popup.classList.add('popup_is-opened')

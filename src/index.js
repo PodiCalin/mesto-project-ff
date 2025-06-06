@@ -7,7 +7,6 @@ import { createCard , clicklikeButton ,  deleteCard } from "./components/card.js
 //Список карточек
 const unorderList = document.querySelector('.places__list')
 //Попапы
-const popup = document.querySelector('.popup')
 const popups = document.querySelectorAll('.popup')
 const editPopup = document.querySelector('.popup_type_edit')
 const addPopup = document.querySelector('.popup_type_new-card')
@@ -25,14 +24,21 @@ const editProfileForm = document.forms["edit-profile"]
 //Форма добавления
 const newPlaceForm = document.forms["new-place"]
 //Инпуты
-const editInputs = editProfileForm.querySelectorAll('.popup__input')
 const nameInput = editProfileForm.querySelector('.popup__input_type_name')
 const jobInput = editProfileForm.querySelector('.popup__input_type_description')
 const placeInputForm = newPlaceForm.querySelector('.popup__input_type_card-name')
 const urlInputForm = newPlaceForm.querySelector('.popup__input_type_url')
 //Вызовы функций
-editButton.addEventListener('click' , function(evt){openModal(editPopup)})
-addButton.addEventListener('click' , function(evt){openModal(addPopup)})
+editButton.addEventListener('click' , function(evt){
+  nameInput.value = name.textContent
+  jobInput.value = job.textContent
+  resetValidation(editProfileForm)
+  openModal(editPopup)
+})
+addButton.addEventListener('click' , function(evt){
+  resetValidation(newPlaceForm)
+  openModal(addPopup)
+})
 //Перебор крестиков
 closePopupCross.forEach(function(element){
     element.addEventListener('click', function(evt){
@@ -92,35 +98,83 @@ function handleAddCardForm(evt) {
     newPlaceForm.reset()
 }
 newPlaceForm.addEventListener('submit', handleAddCardForm)
-//Показывает ошибку
-const showError = (el, errorMessage) => {
-  el.classList.add('popup__input_type_error');
-  const formError = el.parentElement.querySelector(`.${el.id}-error`)
-  formError.textContent = errorMessage
-  formError.classList.add('form__input-error_active')
+
+// Функция, которая показывает сообщение об ошибке рядом с полем ввода
+const showInputError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
+  inputElement.classList.add('popup__input_type_error')
+  errorElement.textContent = errorMessage
+  errorElement.classList.add('popup__input-error_active')
 }
-//Скрывает ошибку
-const hideError = (el) => {
-  el.classList.remove('popup__input_type_error');
-  const formError = el.parentElement.querySelector(`.${el.id}-error`)
-  formError.textContent = ''
-  formError.classList.remove('form__input-error_active')
+
+// Функция, которая скрывает сообщение об ошибке, если пользователь всё ввёл правильно
+const hideInputError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`)
+  inputElement.classList.remove('popup__input_type_error')
+  errorElement.classList.remove('popup__input-error_active')
+  errorElement.textContent = ''
 }
-//Валидация формы
-const checkInputValidity = (el) => {
-  if (!el.validity.valid) {
-    showError(el, el.validationMessage)
+
+// Проверяет корректность введённых данных в одном поле
+const checkInputValidity = (formElement, inputElement) => {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage)
   } else {
-    hideError(el)
+    hideInputError(formElement, inputElement)
   }
 }
-//
-editProfileForm.addEventListener('submit', (evt) => {
-  evt.preventDefault()
-})
-//Перебор инпутов
-editInputs.forEach((el) => {
-  el.addEventListener('input', () => {
-    checkInputValidity(el)
+
+const hasInvalidInput = (inputList) => {
+  return inputList.some((inputElement)=> {
+    return !inputElement.validity.valid
   })
-})
+  }
+
+const toggleButtonState = (inputList, buttonElement) => {
+  // Если есть хотя бы один невалидный инпут
+  if (hasInvalidInput(inputList)) {
+    // сделай кнопку неактивной
+    buttonElement.disabled = true;
+    buttonElement.classList.add('popup__button-inactive')
+  } else {
+    // иначе сделай кнопку активной
+    buttonElement.disabled = false;
+    buttonElement.classList.remove('popup__button-inactive')
+  }
+}
+
+const setEventListeners = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll('.popup__input'))
+   const buttonElement = formElement.querySelector('.popup__button')
+   toggleButtonState(inputList, buttonElement)
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener('input', function () {
+      checkInputValidity(formElement, inputElement)
+      toggleButtonState(inputList, buttonElement)
+    })
+  })
+}
+//Функция валилации
+const enableValidation = () => {
+  const formList = Array.from(document.querySelectorAll('.popup__form'))
+  formList.forEach((formElement) => {
+    setEventListeners(formElement)
+    formElement.addEventListener('submit', function (evt) {
+      evt.preventDefault()
+    })
+  })
+}
+enableValidation()
+//Удаление ошибок валидации
+const resetValidation = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
+  const buttonElement = formElement.querySelector('.popup__button');
+
+  inputList.forEach((inputElement) => {
+    hideInputError(formElement, inputElement)
+    inputElement.value = ''
+  })
+  
+  toggleButtonState(inputList, buttonElement);
+}
+
