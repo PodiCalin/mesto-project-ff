@@ -33,11 +33,11 @@ const urlInputForm = newPlaceForm.querySelector('.popup__input_type_url')
 editButton.addEventListener('click' , function(evt){
   nameInput.value = name.textContent
   jobInput.value = job.textContent
-  resetValidation(editProfileForm)
+  resetValidation(editProfileForm , validConfig)
   openModal(editPopup)
 })
 addButton.addEventListener('click' , function(evt){
-  resetValidation(newPlaceForm)
+  resetValidation(newPlaceForm , validConfig)
   openModal(addPopup)
 })
 //Перебор крестиков
@@ -104,10 +104,9 @@ const validConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__button',
-  inactiveButtonClass: 'popup__button_inactive',
+  inactiveButtonClass: 'popup__button-inactive',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active'
 } 
 
 enableValidation(validConfig)
-

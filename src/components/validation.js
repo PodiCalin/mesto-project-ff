@@ -64,7 +64,7 @@ const showInputError = (formElement, inputElement, errorMessage , validConfig) =
 export  const enableValidation = (validConfig) => {
     const formList = Array.from(document.querySelectorAll(validConfig.formSelector))
     formList.forEach((formElement) => {
-      setEventListeners(formElement)
+      setEventListeners(formElement , validConfig)
       formElement.addEventListener('submit', function (evt) {
         evt.preventDefault()
       })
@@ -76,7 +76,7 @@ export  const resetValidation = (formElement , validConfig) => {
     const buttonElement = formElement.querySelector(validConfig.submitButtonSelector);
   
     inputList.forEach((inputElement) => {
-      hideInputError(formElement, inputElement)
+      hideInputError(formElement, inputElement , validConfig)
       inputElement.value = ''
     })
     
