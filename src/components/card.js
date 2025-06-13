@@ -1,5 +1,5 @@
 //Функция создания карточки
-export const createCard = function(data , callbackDelete , handleClickCard , clicklikeButton) {
+export const createCard = function(data, callbackDelete, handleClickCard, clicklikeButton) {
     const cardTemplate = document.querySelector('#card-template').content
     const cardElement = cardTemplate.querySelector(".card").cloneNode(true)
 

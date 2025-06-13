@@ -96,8 +96,8 @@ function handleFormSubmit(evt) {
   // Отправляем запрос на сервер для обновления профиля
   updateUserProfile (name, about) 
     .then((userData) => {
-      name.textContent = userData.name
-      job.textContent = userData.about
+      profileName.textContent = userData.name
+      jobDescription.textContent = userData.about
       //Закрытие попапа
       popups.forEach((item) => {
         closeModal(item)
@@ -123,9 +123,9 @@ function handleAddCardForm(evt) {
   const originalButtonText = submitButton.textContent
   //Включаем индикацию загрузки
   renderLoading (true, submitButton, originalButtonText)
-  addCard(name , link)
+  addCard(name, link)
     .then((cardData) => {
-    const setCard = createCard(cardData, cardImage, cardTemplate, deleteCard, handleClickCard, clicklikeButton)
+    const setCard = createCard(cardData, deleteCard, handleClickCard, clicklikeButton)
     unorderList.prepend(setCard)
     popups.forEach((item) => {
         closeModal(item)
