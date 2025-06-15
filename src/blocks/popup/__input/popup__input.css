@@ -20,28 +20,3 @@
     line-height: 15px;
   }
 }
-
-.popup__input_type_error {
-  border-bottom: 1px solid rgba(255, 0, 0, 1);
-}
-
-.popup__error {
-  font-size: 12px;
-  font-weight: 400;
-  margin-block-start: 5px;
-  color: rgba(255, 0, 0, 1);
-  opacity: 0;
-}
-
-.popup__input-error_active {
-  opacity: 1;
-}
-
-.popup__input-container {
-  position: relative;
-  margin-bottom: 35px;
-}
-
-.popup__input-container:last-of-type {
-  margin-bottom: 0;
-}

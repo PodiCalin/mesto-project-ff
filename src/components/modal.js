@@ -1,28 +1,26 @@
-//Функция открытия попапа
-export function openModal(popup){
-    popup.classList.add('popup_is-opened')
-    document.addEventListener('keydown', closeEsc)
-    popup.addEventListener('click' , closeClickModal)   
-}
-//Функция закрытия кликом на оверлей
-function closeClickModal(evt){
-    if(evt.target === evt.currentTarget){
-        document.querySelectorAll('.popup_is-opened').forEach(function(el){
-            closeModal(evt.currentTarget)})
-    }
+// modal.js
+
+// Функция открытия модального окна
+export function openModal(popupElement) {
+  popupElement.classList.add("popup_is-opened");
+  // Добавляем обработчик нажатия клавиши Esc
+  document.addEventListener("keydown", handleEscClose);
 }
 
-
-//Функция закрытия по ESC
-function closeEsc(evt){
-    if(evt.key === 'Escape'){
-        document.querySelectorAll('.popup_is-opened').forEach(function(el){
-        closeModal(el)})
-    }
+// Функция закрытия модального окна
+export function closeModal(popupElement) {
+  popupElement.classList.remove("popup_is-opened");
+  // Удаляем обработчик нажатия клавиши Esc
+  document.removeEventListener("keydown", handleEscClose);
 }
-//Функция закрытия
-export function closeModal(popup){
- popup.classList.remove('popup_is-opened')
- document.removeEventListener('keydown' , closeEsc)
- popup.removeEventListener('click' , closeClickModal)
+
+// Функция-обработчик для Esc
+function handleEscClose(evt) {
+  if (evt.key === "Escape") {
+    // Находим открытый попап
+    const openedPopup = document.querySelector(".popup_is-opened");
+    if (openedPopup) {
+      closeModal(openedPopup);
+    }
+  }
 }
