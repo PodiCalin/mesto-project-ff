@@ -25,7 +25,7 @@
   border-bottom: 1px solid rgba(255, 0, 0, 1);
 }
 
-.form__input-error {
+.popup__error {
   font-size: 12px;
   font-weight: 400;
   margin-block-start: 5px;
@@ -35,4 +35,13 @@
 
 .popup__input-error_active {
   opacity: 1;
+}
+
+.popup__input-container {
+  position: relative;
+  margin-bottom: 35px;
+}
+
+.popup__input-container:last-of-type {
+  margin-bottom: 0;
 }
