@@ -221,7 +221,9 @@ deleteCardButton.addEventListener ("click", () => {
     removeCard (cardId)
       .then (() => {
         //Если запрос успешен, удаляем карточку из DOM
-        cardToDelete.remove ();
+        deleteCard()
+        //Очищаем ссылку на удаляемую карточку
+        cardToDelete = null
         //Закрываем попап
         closeModal (deleteCardPopup)
       })
@@ -231,8 +233,7 @@ deleteCardButton.addEventListener ("click", () => {
       .finally (() => {
         //Выключаем индикацию загрузки
         renderLoading (false, deleteCardButton, originalButtonText)
-        //Очищаем ссылку на удаляемую карточку
-        cardToDelete = null
+
       })
   }
 })
@@ -256,8 +257,6 @@ Promise.all ([getUserInfo (), getInitialCards ()])
     //Обновляем данные профиля
     profileTitle.textContent = userData.name
     profileDescription.textContent = userData.about
-    //Если у пользователя есть аватар, обновляем его
-    const profileImage = document.querySelector (".profile__image")
     if (userData.avatar) {
       profileImage.style.backgroundImage = `url(${userData.avatar})`
     }

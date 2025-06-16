@@ -60,14 +60,11 @@ const setEventListeners = (formElement , validConfig) => {
     })
   })
 }
-//Функция валилации
+//Функция валидации
 export  const enableValidation = (validConfig) => {
   const formList = Array.from(document.querySelectorAll(validConfig.formSelector))
   formList.forEach((formElement) => {
     setEventListeners(formElement , validConfig)
-    formElement.addEventListener('submit', function (evt) {
-      evt.preventDefault()
-    })
   })
 }
 //Удаление ошибок валидации
@@ -77,7 +74,6 @@ export  const resetValidation = (formElement , validConfig) => {
 
   inputList.forEach((inputElement) => {
     hideInputError(formElement, inputElement , validConfig)
-    inputElement.value = ''
   })
 
   toggleButtonState(inputList, buttonElement , validConfig);
