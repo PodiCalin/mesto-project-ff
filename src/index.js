@@ -193,7 +193,6 @@ avatarEditButton.addEventListener ("click", () => {
 editProfileForm.addEventListener ("submit", handleProfileFormSubmit)
 //Отправка формы добавления карточки
 addCardForm.addEventListener ("submit", handleAddCardSubmit)
-
 //Открытие попапа редактирования профиля
 editButton.addEventListener ("click", () => {
   //Подставляем актуальные значения в инпуты
