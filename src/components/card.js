@@ -16,21 +16,14 @@ export function handleLikeButtonClick(evt, cardId, likeCount) {
       console.error(`Ошибка при обновлении лайка: ${err}`)
     })
 }
-//Функция удаления карточки
-export function deleteCard(cardElement, handleDeleteButtonClick) {
-  //handleDeleteButtonClick как параметр
-  if (typeof handleDeleteButtonClick === "function") {
-    handleDeleteButtonClick(cardElement)
-  }
-}
 //Функция создания карточки
 export function createCard(
   cardData,
   cardTemplate,
-  onDeleteCard,
+  handleDeleteButtonClick,
   handleLikeButtonClick,
   handleCardImageClick,
-  handleDeleteButtonClick,
+  currentUserId,
 ) {
   //Клонируем шаблон карточки
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true)
@@ -48,22 +41,19 @@ export function createCard(
   cardTitle.textContent = cardData.name
   //Устанавливаем количество лайков
   likeCount.textContent = cardData.likes.length
-  //Получаем ID текущего пользователя
-  const userId = document.querySelector(".profile__title").dataset.userId
   //Проверяем, является ли текущий пользователь владельцем карточки
-  if (cardData.owner && cardData.owner._id !== userId) {
+  if (cardData.owner && cardData.owner._id !== currentUserId) {
     //Если не владелец - скрываем кнопку удаления
-    deleteButton.style.display = "none"
+    deleteButton.classList.add("card__delete-button-hidden")
   }
   //Проверяем, лайкнул ли текущий пользователь карточку
-  const isLiked = cardData.likes.some((user) => user._id === userId)
+  const isLiked = cardData.likes.some((user) => user._id === currentUserId)
   if (isLiked) {
     likeButton.classList.add("card__like-button_is-active")
   }
   //Обработчик удаления карточки
   deleteButton.addEventListener("click", () => {
-    //Передаем функцию handleDeleteButtonClick в deleteCard
-    onDeleteCard(cardElement, handleDeleteButtonClick)
+    handleDeleteButtonClick(cardElement)
   })
   //Обработчик лайка
   likeButton.addEventListener("click", (evt) => {
