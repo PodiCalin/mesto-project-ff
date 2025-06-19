@@ -154,10 +154,10 @@ function handleAddCardSubmit(evt) {
     .then ((cardData) => {
       //Создаём новую карточку с данными, полученными с сервера
       const newCard = createCard (
-        cardData,
-        cardTemplate,
+          cardData,
+          cardTemplate,
           handleDeleteButtonClick,
-        handleCardImageClick,
+          handleCardImageClick,
           currentUserId,
       )
       //Добавляем карточку в начало списка
@@ -238,10 +238,10 @@ function renderCards(cards) {
   // Перебираем массив карточек и добавляем каждую на страницу
   cards.forEach ((cardData) => {
     const cardElement = createCard (
-      cardData,
-      cardTemplate,
+        cardData,
+        cardTemplate,
         handleDeleteButtonClick,
-      handleCardImageClick,
+        handleCardImageClick,
         currentUserId,
     )
     placesList.append (cardElement)
