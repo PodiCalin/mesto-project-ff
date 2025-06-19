@@ -47,7 +47,6 @@ const deleteCardPopup = document.querySelector (".popup_type_delete-card")
 const deleteCardButton = deleteCardPopup.querySelector (".popup__button_delete")
 let cardToDelete = null; // Переменная для хранения ссылки на удаляемую карточку
 //Все попапы на странице
-const popups = document.querySelectorAll (".popup")
 const closePopupCross = document.querySelectorAll('.popup__close')
 //Конфиг валидации форм
 const validationConfig = {
@@ -66,10 +65,12 @@ function renderLoading(isLoading, button, buttonText = "Сохранить", loa
     button.textContent = buttonText;
   }
 }
-//Перебор крестиков
-closePopupCross.forEach(function(element){
-  element.addEventListener('click', function(evt){
-    closeModal(element.closest(".popup"))
+closePopupCross.forEach(function(cross) {
+  // Находим родительский попап один раз
+  const popup = cross.closest('.popup')
+  // Назначаем обработчик
+  cross.addEventListener('click', function() {
+    closeModal(popup)
   })
 })
 //Обработчик клика по изображению карточки
