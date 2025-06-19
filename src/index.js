@@ -3,8 +3,6 @@ import "./pages/index.css"; // Импорт основного CSS-файла
 import { closeModal, openModal } from "./components/modal.js" // Импорт функций для работы с попапами
 import {
   createCard,
-  deleteCard,
-  handleLikeButtonClick,
 } from "./components/card.js" // Импорт функций и данных для карточек
 import {resetValidation, enableValidation} from "./components/validate.js" // Импорт функций для валидации
 import {
@@ -17,6 +15,7 @@ import {
 } from "./components/api.js"; // Импорт функций для получения данных профиля
 //Шаблон карточки
 const cardTemplate = document.querySelector ("#card-template").content
+const currentUserId = document.querySelector(".profile__title").dataset.userId
 //Контейнер для карточек
 const placesList = document.querySelector (".places__list")
 //Элементы для обновления аватара
@@ -157,10 +156,9 @@ function handleAddCardSubmit(evt) {
       const newCard = createCard (
         cardData,
         cardTemplate,
-        deleteCard,
-        handleLikeButtonClick,
+          handleDeleteButtonClick,
         handleCardImageClick,
-        handleDeleteButtonClick
+          currentUserId,
       )
       //Добавляем карточку в начало списка
       placesList.prepend (newCard)
@@ -175,11 +173,6 @@ function handleAddCardSubmit(evt) {
       //Выключаем индикацию загрузки
       renderLoading (false, submitButton, originalButtonText);
     })
-}
-//Функция для открытия попапа удаления карточки
-function handleDeleteButtonClick(cardElement) {
-  cardToDelete = cardElement // Сохраняем ссылку на карточку, которую нужно удалить
-  openModal (deleteCardPopup)
 }
 //Отправка формы обновления аватара
 avatarForm.addEventListener ("submit", handleAvatarFormSubmit)
@@ -207,6 +200,11 @@ addButton.addEventListener ("click", () => {
   resetValidation (addCardForm, validationConfig)
   openModal (addCardPopup)
 })
+//Функция для открытия попапа удаления карточки
+function handleDeleteButtonClick(cardElement) {
+  cardToDelete = cardElement // Сохраняем ссылку на карточку, которую нужно удалить
+  openModal (deleteCardPopup)
+}
 //Обработчик клика по кнопке "Да" в попапе удаления карточки
 deleteCardButton.addEventListener ("click", () => {
   if (cardToDelete) {
@@ -220,7 +218,7 @@ deleteCardButton.addEventListener ("click", () => {
     removeCard (cardId)
       .then (() => {
         //Если запрос успешен, удаляем карточку из DOM
-        deleteCard()
+        cardElement.remove()
         //Очищаем ссылку на удаляемую карточку
         cardToDelete = null
         //Закрываем попап
@@ -242,10 +240,9 @@ function renderCards(cards) {
     const cardElement = createCard (
       cardData,
       cardTemplate,
-      deleteCard,
-      handleLikeButtonClick,
+        handleDeleteButtonClick,
       handleCardImageClick,
-      handleDeleteButtonClick
+        currentUserId,
     )
     placesList.append (cardElement)
   })
