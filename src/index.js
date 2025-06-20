@@ -2,7 +2,7 @@
 import "./pages/index.css"; // Импорт основного CSS-файла
 import { closeModal, openModal } from "./components/modal.js" // Импорт функций для работы с попапами
 import {
-  createCard,
+  createCard, deleteCard,
 } from "./components/card.js" // Импорт функций и данных для карточек
 import {resetValidation, enableValidation} from "./components/validate.js" // Импорт функций для валидации
 import {
@@ -157,6 +157,7 @@ function handleAddCardSubmit(evt) {
       const newCard = createCard (
           cardData,
           cardTemplate,
+          deleteCard,
           handleDeleteButtonClick,
           handleCardImageClick,
           currentUserId,
@@ -202,8 +203,8 @@ addButton.addEventListener ("click", () => {
   openModal (addCardPopup)
 })
 //Функция для открытия попапа удаления карточки
-function handleDeleteButtonClick(cardElement) {
-  cardToDelete = cardElement // Сохраняем ссылку на карточку, которую нужно удалить
+function handleDeleteButtonClick(cardElement, cardId) {
+  cardToDelete = { element: cardElement, id: cardId } // Сохраняем ссылку на карточку, которую нужно удалить
   openModal (deleteCardPopup)
 }
 //Обработчик клика по кнопке "Да" в попапе удаления карточки
@@ -219,7 +220,7 @@ deleteCardButton.addEventListener ("click", () => {
     removeCard (cardId)
       .then (() => {
         //Если запрос успешен, удаляем карточку из DOM
-        cardElement.remove()
+        deleteCard(cardToDelete)
         //Очищаем ссылку на удаляемую карточку
         cardToDelete = null
         //Закрываем попап
@@ -241,6 +242,7 @@ function renderCards(cards) {
     const cardElement = createCard (
         cardData,
         cardTemplate,
+        deleteCard,
         handleDeleteButtonClick,
         handleCardImageClick,
         currentUserId,

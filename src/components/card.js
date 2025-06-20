@@ -16,10 +16,14 @@ function handleLikeButtonClick(evt, cardId, likeCount) {
       console.error(`Ошибка при обновлении лайка: ${err}`)
     })
 }
+export function deleteCard(cardElement){
+  cardElement.remove()
+}
 //Функция создания карточки
 export function createCard(
   cardData,
   cardTemplate,
+  deleteCard,
   handleDeleteButtonClick,
   handleCardImageClick,
   currentUserId,
@@ -40,6 +44,7 @@ export function createCard(
   if (likeCount) {
     likeCount.textContent = cardData.likes.length
   }
+  const cardId = cardData._id
   //Проверяем, является ли текущий пользователь владельцем карточки
   if (cardData.owner && cardData.owner._id !== currentUserId) {
     //Если не владелец - скрываем кнопку удаления
@@ -52,7 +57,8 @@ export function createCard(
   }
   //Обработчик удаления карточки
   deleteButton.addEventListener("click", () => {
-    handleDeleteButtonClick(cardElement)
+    if(handleDeleteButtonClick(cardElement , cardId)){
+    deleteCard(cardElement)}
   })
   //Обработчик лайка
   likeButton.addEventListener("click", (evt) => {
